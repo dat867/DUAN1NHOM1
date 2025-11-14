@@ -1,6 +1,6 @@
 <?php
 // có class chứa các function thực thi xử lý logic 
-class ProductController
+class UsersController
 {
     public $modelProduct;
 
@@ -14,11 +14,7 @@ class ProductController
 
     }
 
-    public function Home(){
-        $title = "Đây là trang chủ nhé hahaa";
-        $thoiTiet = "Hôm nay trời có vẻ là mưa";
-        require_once './views/trangchu.php';
-    }
+    
 
 
 
@@ -42,7 +38,7 @@ class ProductController
                     header('Location: '.BASE_URL.'?act=admin'); 
                     exit();
 
-                }else {
+                }else if($user['role']=='guide') {
                     $_SESSION['guide']=$user;
                     //chuyển hướng trang guide tạm thời đợi làm dashboard
                     header('Location: '.BASE_URL.'?act=guide');
@@ -82,8 +78,8 @@ public function formregister(){
           //vì là bảo mật 
            //dùng password_hash() là hàm của PHP dùng để mã hoá mật khẩu trước khi lưu vào cơ sở dữ liệu
            //PASSWORD_DEFAULT là thuật toán mã hoá mặc định của PHP (hiện tại là bcrypt)
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $this->modelUser->register($fullname, $email, $hashedPassword, $phone, $address);
+       
+        $this->modelUser->register($fullname, $email, $password, $phone, $address);
         echo "<script>alert('Đăng ký thành công! Vui lòng đăng nhập.'); window.location='".BASE_URL."?act=login';</script>";
         exit();
     }
@@ -127,5 +123,24 @@ function formforgotpassword() {
 }
 
 
+//////////////////////////////////////////        phần đăng xuất      /////////////////////////////////////////
+public function logout(){
+    session_start();
+    session_destroy();
+    header("Location: " . BASE_URL . "?act=login");
+    exit();
+}
 
+
+
+//////////////////////////////////////////        phần đăng qua trang admin     /////////////////////////////////////////
+public function admin(){
+    require_once BASE_URL_VIEWS.'trangchu.php';
+
+
+}
+
+public function guide(){
+    require_once BASE_URL_VIEWS.'guide/guide.php';
+}
 }
