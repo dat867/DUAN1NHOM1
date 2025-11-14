@@ -1,4 +1,5 @@
 <?php 
+session_start();
 // Require toàn bộ các file khai báo môi trường, thực thi,...(không require view)
 
 // Require file Common
@@ -10,6 +11,7 @@ require_once './controllers/ProductController.php';
 
 // Require toàn bộ file Models
 require_once './models/ProductModel.php';
+require_once './models/UserModel.php';
 
 // Route
 $act = $_GET['act'] ?? '/';
@@ -19,6 +21,24 @@ $act = $_GET['act'] ?? '/';
 
 match ($act) {
     // Trang chủ
-    '/'=>(new ProductController())->Home(),
+    '/' => (new ProductController())->Login(),
 
+    // Xử lý đăng nhập
+    'formlogin' => (new ProductController())->formlogin(),
+    //xử lý đăng kí
+    'register' => (new ProductController())->register(),
+    'formregister' => (new ProductController())->formregister(),
+
+    //xử lí quên mật khẩu
+    'forgotpassword' => (new ProductController())->forgotpass(),
+    'formforgotpassword' => (new ProductController())->formforgotpassword(),
+    
+ 
+
+    // Redirects from controller can point here; map to Login for now
+    'admin' => (new ProductController())->Login(),
+    'guide' => (new ProductController())->Login(),
+
+    // Mặc định: hiển thị trang login (tránh UnhandledMatchError)
+    default => (new ProductController())->Login(),
 };
