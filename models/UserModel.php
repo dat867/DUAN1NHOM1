@@ -27,12 +27,12 @@ class UserModel {
         return $user;
     }
     //hàm thêm account
-    public function register($fullname, $email, $hashedPassword,$phone, $address){
+    public function register($fullname, $email, $password,$phone, $address){
         $sql="INSERT INTO users (fullname, email, password, phone, address) VALUES (:fullname, :email, :password, :phone, :address)";
         $stmt =$this->conn->prepare($sql);
         $stmt->bindParam(':fullname', $fullname);
         $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':password', $hashedPassword);
+        $stmt->bindParam(':password', $password);
         $stmt->bindParam(':phone', $phone);
         $stmt->bindParam(':address', $address);
        return $stmt->execute();
